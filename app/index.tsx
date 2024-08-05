@@ -10,7 +10,7 @@ export default function Index() {
         backgroundColor: "#F5FCFF",
       }}
     >
-      <Text>Edit app/index.tsx to edit this screen.</Text>
+      <Text>Truco Marker</Text>
     </View>
   );
 }
