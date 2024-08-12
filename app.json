@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "truco-marker",
+    "name": "Truco Marker",
     "slug": "truco-marker",
-    "version": "1.0.0",
+    "version": "0.1.2",
     "orientation": "portrait",
     "icon": "assets/images/logo.png",
     "scheme": "myapp",
