@@ -6,6 +6,21 @@
 
 Um aplicativo de marcação de truco para Android.
 
+## Funcionalidades
+- [x] Marcação de pontos
+- [x] Multiplicador do Truco (Truco!, Seis!, Nove!, Doze!)
+- [x] Histórico de rodadas e opção de desfazer última ação.
+- [x] Feedback tátil ao interagir com o app.
+- [x] Persistência dos dados 
+
+## To-Do
+- [ ] Página de guiá de uso
+- [ ] Histórico de Jogos
+- [ ] Customização de Regras
+- [ ] Animações (Principalmente na vitória)
+- [ ] Compartilhamento de Resultados (Gerar imagem com resultado da partida)
+- [ ] Tema Personalizado
+
 [![Node](https://img.shields.io/badge/Node.js-43853D?style=for-the-badge&logo=node.js&logoColor=white)](https://nodejs.org/en/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![React Native](https://img.shields.io/badge/React_Native-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)](https://reactnative.dev/)
