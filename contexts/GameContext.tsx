@@ -1,4 +1,6 @@
-import { createContext, useContext, useState } from 'react'
+import { createContext, useContext, useEffect, useState } from 'react'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import * as Haptics from 'expo-haptics'
 
 type Multiplier = 1 | 3 | 6 | 9 | 12
 type MultiplierLabel = 'Truco!' | 'Seis!' | 'Nove!' | 'Doze!' | 'Reset'
@@ -39,11 +41,30 @@ export const GameProvider = ({ children }: Props) => {
   const [multiplier, setMultiplier] = useState<Multiplier>(1)
   const [rounds, setRounds] = useState<Round[]>([])
 
+  useEffect(() => {
+    const getRounds = async () => {
+      const rounds = await AsyncStorage.getItem('rounds')
+      if (rounds) {
+        setRounds(JSON.parse(rounds))
+      }
+    }
+    getRounds()
+  }, [])
+
+  useEffect(() => {
+    const saveRounds = async () => {
+      await AsyncStorage.setItem('rounds', JSON.stringify(rounds))
+    }
+
+    saveRounds()
+  }, [rounds])
+
   const resetMultiplier = () => {
     setMultiplier(1)
   }
 
   const toggleMultiplier = () => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium)
     if (multiplier === 1) {
       setMultiplier(3)
       return
@@ -57,6 +78,7 @@ export const GameProvider = ({ children }: Props) => {
   }
 
   const addPoints = (team: 'a' | 'b', forceValue?: number) => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)
     const sum = forceValue || multiplier
     const id = new Date().getTime()
     setRounds((rounds) => [...rounds, { id, team, points: sum }])
@@ -69,10 +91,12 @@ export const GameProvider = ({ children }: Props) => {
   }
 
   const removeLastRound = () => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy)
     setRounds((rounds) => rounds.slice(0, -1))
   }
 
   const removeLastTeamRound = (team: 'a' | 'b') => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy)
     const roundsSortedById = rounds.sort((a, b) => b.id - a.id)
     const lastRoundTeamX = roundsSortedById.find((round) => round.team === team)
     if (!lastRoundTeamX) {
@@ -84,6 +108,7 @@ export const GameProvider = ({ children }: Props) => {
   }
 
   const remove1PointFromTeam = (team: 'a' | 'b') => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)
     const roundsSortedById = rounds.sort((a, b) => b.id - a.id)
     const lastRoundTeamX = roundsSortedById.find((round) => round.team === team)
 
@@ -132,6 +157,7 @@ export const GameProvider = ({ children }: Props) => {
   }
 
   const resetGame = () => {
+    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning)
     setRounds([])
     resetMultiplier()
   }
