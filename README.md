@@ -14,6 +14,21 @@ Um aplicativo de marcação de truco para Android.
 [![ESLINT](https://img.shields.io/badge/ESLINT-4B32C3?style=for-the-badge&logo=eslint&logoColor=white)](https://eslint.org/)
 [![Prettier](https://img.shields.io/badge/Prettier-F7B93E?style=for-the-badge&logo=prettier&logoColor=white)](https://prettier.io/)
 
+## Funcionalidades
+- [x] Marcação de pontos
+- [x] Multiplicador do Truco (Truco!, Seis!, Nove!, Doze!)
+- [x] Histórico de rodadas e opção de desfazer última ação.
+- [x] Feedback tátil ao interagir com o app.
+- [x] Persistência dos dados 
+
+## To-Do
+- [ ] Página de guiá de uso
+- [ ] Histórico de Jogos
+- [ ] Customização de Regras
+- [ ] Animações (Principalmente na vitória)
+- [ ] Compartilhamento de Resultados (Gerar imagem com resultado da partida)
+- [ ] Tema Personalizado
+
 ## Requisitos
 
 - [Node.js](https://nodejs.org/en/)
