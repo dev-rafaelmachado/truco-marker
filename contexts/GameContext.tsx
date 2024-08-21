@@ -20,8 +20,7 @@ type GameState = {
   removeLastRound: () => void
   removeLastTeamRound: (team: 'a' | 'b') => void
   remove1PointFromTeam: (team: 'a' | 'b') => void
-  getAPoints: () => number
-  getBPoints: () => number
+  getPoints: (team: 'a' | 'b') => number
   resetGame: () => void
 }
 
@@ -84,7 +83,7 @@ export const GameProvider = ({ children }: Props) => {
     setRounds((rounds) => [...rounds, { id, team, points: sum }])
     resetMultiplier()
 
-    if (getAPoints() + sum > 12 || getBPoints() + sum > 12) {
+    if (getPoints(team) + sum > 12) {
       resetGame()
       resetMultiplier()
     }
@@ -138,18 +137,9 @@ export const GameProvider = ({ children }: Props) => {
     })
   }
 
-  const getAPoints = () => {
+  const getPoints = (team: 'a' | 'b') => {
     return rounds.reduce((acc, round) => {
-      if (round.team === 'a') {
-        return acc + round.points
-      }
-      return acc
-    }, 0)
-  }
-
-  const getBPoints = () => {
-    return rounds.reduce((acc, round) => {
-      if (round.team === 'b') {
+      if (round.team === team) {
         return acc + round.points
       }
       return acc
@@ -172,8 +162,7 @@ export const GameProvider = ({ children }: Props) => {
         removeLastRound,
         removeLastTeamRound,
         remove1PointFromTeam,
-        getAPoints,
-        getBPoints,
+        getPoints,
         resetGame,
       }}
     >

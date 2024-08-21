@@ -4,18 +4,17 @@ import { Entypo, Ionicons } from '@expo/vector-icons'
 import { IconButton } from './IconButton'
 
 export const Scorer = () => {
-  const { getAPoints, getBPoints, removeLastRound, resetGame } =
-    useGameContext()
+  const { getPoints, removeLastRound, resetGame } = useGameContext()
   return (
     <View style={styles.container}>
       <View style={styles.score}>
         <View style={styles.box}>
           <Text style={styles.teamTitle}>Nós</Text>
-          <Text style={styles.teamScore}>{getAPoints()}</Text>
+          <Text style={styles.teamScore}>{getPoints('a')}</Text>
         </View>
         <View style={styles.box}>
           <Text style={styles.teamTitle}>Eles</Text>
-          <Text style={styles.teamScore}>{getBPoints()}</Text>
+          <Text style={styles.teamScore}>{getPoints('b')}</Text>
         </View>
       </View>
       <View style={styles.footer}>
