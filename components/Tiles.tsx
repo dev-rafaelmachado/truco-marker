@@ -29,6 +29,9 @@ export const Tiles = () => {
 
 const styles = StyleSheet.create({
   container: {
+    padding: 20,
+    paddingTop: 10,
+    paddingBottom: 90,
     position: 'absolute',
     flexDirection: 'row',
     width: '100%',

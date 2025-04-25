@@ -83,9 +83,14 @@ export const GameProvider = ({ children }: Props) => {
     setRounds((rounds) => [...rounds, { id, team, points: sum }])
     resetMultiplier()
 
-    if (getPoints(team) + sum > 12) {
+    const teamPoints = getPoints(team)
+    const otherTeam = team === 'a' ? 'b' : 'a'
+    const otherTeamPoints = getPoints(otherTeam)
+
+    const winningScore = teamPoints === 11 && otherTeamPoints === 11 ? 13 : 12
+
+    if (teamPoints + sum > winningScore) {
       resetGame()
-      resetMultiplier()
     }
   }
 
