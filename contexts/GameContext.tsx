@@ -89,7 +89,7 @@ export const GameProvider = ({ children }: Props) => {
 
     const winningScore = teamPoints === 11 && otherTeamPoints === 11 ? 13 : 12
 
-    if (teamPoints + sum > winningScore) {
+    if (teamPoints + sum >= winningScore) {
       resetGame()
     }
   }
