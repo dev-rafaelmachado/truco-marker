@@ -22,6 +22,8 @@ type GameState = {
   remove1PointFromTeam: (team: 'a' | 'b') => void
   getPoints: (team: 'a' | 'b') => number
   resetGame: () => void
+  matchWins: { a: number; b: number }
+  resetMatchWins: () => void
 }
 
 type Round = {
@@ -39,24 +41,44 @@ type Props = {
 export const GameProvider = ({ children }: Props) => {
   const [multiplier, setMultiplier] = useState<Multiplier>(1)
   const [rounds, setRounds] = useState<Round[]>([])
+  const [matchWins, setMatchWins] = useState<{ a: number; b: number }>({
+    a: 0,
+    b: 0,
+  })
 
   useEffect(() => {
-    const getRounds = async () => {
-      const rounds = await AsyncStorage.getItem('rounds')
-      if (rounds) {
-        setRounds(JSON.parse(rounds))
+    const loadData = async () => {
+      try {
+        const roundsData = await AsyncStorage.getItem('rounds')
+        const winsData = await AsyncStorage.getItem('matchWins')
+
+        if (roundsData) {
+          setRounds(JSON.parse(roundsData))
+        }
+
+        if (winsData) {
+          setMatchWins(JSON.parse(winsData))
+        }
+      } catch (error) {
+        console.error('Error loading data from storage:', error)
       }
     }
-    getRounds()
+    loadData()
   }, [])
 
   useEffect(() => {
     const saveRounds = async () => {
       await AsyncStorage.setItem('rounds', JSON.stringify(rounds))
     }
-
     saveRounds()
   }, [rounds])
+
+  useEffect(() => {
+    const saveMatchWins = async () => {
+      await AsyncStorage.setItem('matchWins', JSON.stringify(matchWins))
+    }
+    saveMatchWins()
+  }, [matchWins])
 
   const resetMultiplier = () => {
     setMultiplier(1)
@@ -83,13 +105,17 @@ export const GameProvider = ({ children }: Props) => {
     setRounds((rounds) => [...rounds, { id, team, points: sum }])
     resetMultiplier()
 
-    const teamPoints = getPoints(team)
+    const teamPoints = getPoints(team) + sum
     const otherTeam = team === 'a' ? 'b' : 'a'
     const otherTeamPoints = getPoints(otherTeam)
 
     const winningScore = teamPoints >= 11 && otherTeamPoints >= 11 ? 13 : 12
 
-    if (teamPoints + sum >= winningScore) {
+    if (teamPoints >= winningScore) {
+      setMatchWins((prev) => ({
+        ...prev,
+        [team]: prev[team] + 1,
+      }))
       resetGame()
     }
   }
@@ -157,6 +183,11 @@ export const GameProvider = ({ children }: Props) => {
     resetMultiplier()
   }
 
+  const resetMatchWins = () => {
+    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning)
+    setMatchWins({ a: 0, b: 0 })
+  }
+
   return (
     <GameContext.Provider
       value={{
@@ -169,6 +200,8 @@ export const GameProvider = ({ children }: Props) => {
         remove1PointFromTeam,
         getPoints,
         resetGame,
+        matchWins,
+        resetMatchWins,
       }}
     >
       {children}

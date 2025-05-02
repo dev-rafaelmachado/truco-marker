@@ -4,7 +4,8 @@ import { Entypo, Ionicons } from '@expo/vector-icons'
 import { IconButton } from './IconButton'
 
 export const Scorer = () => {
-  const { getPoints, removeLastRound, resetGame } = useGameContext()
+  const { getPoints, removeLastRound, resetGame, matchWins, resetMatchWins } =
+    useGameContext()
   return (
     <View style={styles.container}>
       <View style={styles.score}>
@@ -18,14 +19,25 @@ export const Scorer = () => {
         </View>
       </View>
       <View style={styles.footer}>
-        <IconButton
-          onPress={removeLastRound}
-          icon={<Entypo name="back-in-time" size={28} color="white" />}
-        />
-        <IconButton
-          onPress={resetGame}
-          icon={<Ionicons name="close-sharp" size={32} color="white" />}
-        />
+        <View style={styles.overallScore}>
+          <Text style={styles.teamOverallScore}>
+            {matchWins.a} x {matchWins.b}
+          </Text>
+        </View>
+        <View style={styles.actions}>
+          <IconButton
+            onPress={removeLastRound}
+            icon={<Entypo name="back-in-time" size={28} color="white" />}
+          />
+          <IconButton
+            onPress={resetGame}
+            onLongPress={() => {
+              resetGame()
+              resetMatchWins()
+            }}
+            icon={<Ionicons name="close-sharp" size={32} color="white" />}
+          />
+        </View>
       </View>
     </View>
   )
@@ -68,8 +80,28 @@ const styles = StyleSheet.create({
     padding: 10,
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'flex-end',
+    justifyContent: 'space-around',
     borderBottomStartRadius: 12,
     borderBottomEndRadius: 12,
+  },
+  actions: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    width: '50%',
+  },
+  overallScore: {
+    width: '50%',
+    height: '100%',
+    paddingLeft: 10,
+    borderBottomStartRadius: 12,
+    borderBottomEndRadius: 12,
+    marginTop: -10,
+  },
+  teamOverallScore: {
+    fontFamily: 'Rowdies_700Bold',
+    fontSize: 18,
+    color: '#fff',
+    textAlign: 'left',
   },
 })

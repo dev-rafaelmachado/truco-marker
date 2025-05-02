@@ -1,11 +1,11 @@
-import { View, StyleSheet, Dimensions } from 'react-native'
+import { View, Text, StyleSheet, Dimensions } from 'react-native'
 import { Tile } from './Tile'
 import { useGameContext } from '@/contexts/GameContext'
 
 const { height } = Dimensions.get('screen')
 
 export const Tiles = () => {
-  const { addPoints, removeLastTeamRound, remove1PointFromTeam } =
+  const { addPoints, removeLastTeamRound, remove1PointFromTeam, getPoints } =
     useGameContext()
   return (
     <View style={styles.container}>
@@ -23,6 +23,11 @@ export const Tiles = () => {
         onSwipeUp={() => addPoints('b', 3)}
         onSwipeDown={() => remove1PointFromTeam('b')}
       />
+      <View style={styles.reverseViewScore}>
+        <Text style={{ fontSize: 16, fontWeight: 'bold', color: '#fff' }}>
+          {getPoints('a')} x {getPoints('b')}
+        </Text>
+      </View>
     </View>
   )
 }
@@ -43,5 +48,14 @@ const styles = StyleSheet.create({
     borderColor: '#828282',
     opacity: 0.05,
     backgroundColor: '#494949',
+  },
+  reverseViewScore: {
+    position: 'absolute',
+    bottom: 22,
+    left: '6%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
+    transform: [{ rotate: '180deg' }],
   },
 })
